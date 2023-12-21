@@ -2,7 +2,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:note_app/modals/Task_modal.dart';
 import 'package:note_app/widgets/constants.dart';
-import 'package:note_app/widgets/taskCard.dart';
 
 class Tasks extends StatelessWidget {
   final taskList = Task.generateTasks();

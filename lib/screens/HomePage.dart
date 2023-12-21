@@ -1,4 +1,6 @@
 // import 'dart:js';
+// import 'dart:js';
+
 import 'package:flutter/material.dart';
 // import 'package:note_app/components/upper_header.dart';
 // import 'package:note_app/modals/Task_modal.dart';
@@ -77,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // _showMyDialog(context);
+          _showMyDialog(context);
         },
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
@@ -170,30 +172,117 @@ class HomePage extends StatelessWidget {
   }
 }
 
-// Future<void> _showMyDialog(BuildContext parentContext) async {
-//   return showDialog<void>(
-//     context: parentContext,
-//     barrierDismissible: false, // user must tap button!
-//     builder: (BuildContext context) {
-//       return AlertDialog(
-//         title: const Text('add task'),
-//         content: const SingleChildScrollView(
-//           child: ListBody(
-//             children: <Widget>[
-//               Text('This is a demo alert dialog.'),
-//               Text('Would you like to approve of this message?'),
-//             ],
-//           ),
-//         ),
-//         actions: <Widget>[
-//           TextButton(
-//             child: const Text('Approve'),
-//             onPressed: () {
-//               Navigator.of(context).pop();
-//             },
-//           ),
-//         ],
-//       );
-//     },
-//   );
-// }
+const List<String> list = <String>['Work', 'Personal', 'Health', 'Other'];
+
+Future<void> _showMyDialog(BuildContext parentContext) async {
+  var he = MediaQuery.of(parentContext).size.height;
+
+  return showDialog<void>(
+    context: parentContext,
+    barrierDismissible: false, // user must tap button!
+    builder: (BuildContext context) => Dialog(
+      child: Container(
+        height: he * 0.4,
+        width: he * 0.4,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  top: he * 0.009,
+                  bottom: he * 0.009,
+                  right: he * 0.04,
+                  left: he * 0.04),
+            ),
+            Text(
+              "Add Task",
+              style: TextStyle(
+                color: Colors.grey.shade500,
+                fontWeight: FontWeight.w500,
+                fontSize: he * 0.04,
+              ),
+            ),
+            SizedBox(
+              height: he * 0.04,
+            ),
+            const DropdownButtonExample(),
+            SizedBox(
+              height: he * 0.02,
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: he * 0.06, right: he * 0.06),
+              child: const TextField(
+                decoration: InputDecoration(
+                  // border: OutlineInputBorder(),
+                  hintText: 'Enter task name',
+                ),
+              ),
+            ),
+            SizedBox(
+              height: he * 0.02,
+            ),
+            ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStatePropertyAll<Color>(Colors.blue.shade600),
+                ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text(
+                  'Add',
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.black,
+                  ),
+                ))
+          ],
+        ),
+      ),
+    ),
+  );
+}
+
+class DropdownButtonExample extends StatefulWidget {
+  const DropdownButtonExample({super.key});
+
+  @override
+  State<DropdownButtonExample> createState() => _DropdownButtonExampleState();
+}
+
+class _DropdownButtonExampleState extends State<DropdownButtonExample> {
+  String dropdownValue = list.first;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      value: dropdownValue,
+      icon: const Icon(Icons.arrow_downward),
+      elevation: 16,
+      style: const TextStyle(
+        color: Colors.deepPurple,
+        fontSize: 16,
+      ),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String? value) {
+        // This is called when the user selects an item.
+        setState(() {
+          dropdownValue = value!;
+        });
+      },
+      items: list.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
+}

@@ -8,6 +8,7 @@ class Task {
   Color? iconcolor;
   Color? btncolor;
   num? left;
+  List<Map<String, dynamic>>? desc;
   num? done;
   bool isLast;
 
@@ -18,6 +19,7 @@ class Task {
       this.iconcolor,
       this.btncolor,
       this.left,
+      this.desc,
       this.done,
       this.isLast = false});
 
@@ -30,6 +32,43 @@ class Task {
         iconcolor: kBlueDark,
         btncolor: Color.fromARGB(255, 133, 172, 203),
         left: 5,
+        desc: [
+          {
+            'time': '9:00 AM',
+            'title': 'Meeting with client',
+            'slot': '9:00 AM - 10:00 AM',
+            't1cColor': kRedDark,
+            'bgColor': kRedLight,
+          },
+          {
+            'time': '10:00 AM',
+            'title': 'Watching a movie',
+            'slot': '10:00 AM - 11:00 AM',
+            't1cColor': kRedDark,
+            'bgColor': kRedLight,
+          },
+          {
+            'time': '11:00 AM',
+            'title': '',
+            'slot': '',
+            't1cColor': kRedDark,
+            'bgColor': kRedLight,
+          },
+          {
+            'time': '12:00 PM',
+            'title': 'Go to the Gym',
+            'slot': '12:00 PM - 1:00 PM',
+            't1cColor': kRedDark,
+            'bgColor': kRedLight,
+          },
+          {
+            'time': '1:00 PM',
+            'title': 'call with Client',
+            'slot': '1:00 PM - 2:00 PM',
+            't1cColor': Colors.grey.withOpacity(0.3),
+            'bgColor': kYellowLight,
+          },
+        ],
         done: 3,
         isLast: false,
       ),
@@ -54,14 +93,14 @@ class Task {
         isLast: false,
       ),
       Task(
-        icon: Icons.person_rounded,
-        title: 'Personal',
+        icon: Icons.border_outer_sharp,
+        title: 'Other',
         bgcolor: kBlue,
-        iconcolor: kwhite,
-        btncolor: kBlue,
+        iconcolor: kBlueDark,
+        btncolor: Color.fromARGB(255, 133, 172, 203),
         left: 5,
         done: 3,
-        isLast: true,
+        isLast: false,
       ),
     ];
   }
