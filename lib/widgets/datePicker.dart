@@ -23,6 +23,7 @@ class _DatePickerState extends State<DatePicker> {
         ),
       ),
       child: ListView.separated(
+        scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
             setState(() {
@@ -31,7 +32,7 @@ class _DatePickerState extends State<DatePicker> {
           },
           child: Container(
             padding:
-                const EdgeInsets.only(right: 10, left: 10, bottom: 10, top: 25),
+                const EdgeInsets.only(right: 5, left: 10, bottom: 10, top: 25),
             margin: const EdgeInsets.symmetric(horizontal: 0.5),
             decoration: BoxDecoration(
               color: selectedDay == index ? Colors.grey.withOpacity(0.3) : null,
@@ -48,6 +49,13 @@ class _DatePickerState extends State<DatePicker> {
                 ),
                 const SizedBox(
                   height: 5,
+                ),
+                Text(
+                  day[index],
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ],
             ),

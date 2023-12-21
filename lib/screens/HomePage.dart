@@ -2,6 +2,7 @@
 // import 'dart:js';
 
 import 'package:flutter/material.dart';
+import 'package:note_app/modals/Task_modal.dart';
 // import 'package:note_app/components/upper_header.dart';
 // import 'package:note_app/modals/Task_modal.dart';
 import 'package:note_app/screens/ProfilePage.dart';
@@ -10,6 +11,7 @@ import 'package:note_app/widgets/task.dart';
 // import 'package:note_app/widgets/premium.dart';
 // import 'package:note_app/widgets/taskCard.dart';
 import 'package:note_app/screens/MenuPage.dart';
+import 'package:note_app/widgets/TaskTimeLine.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -175,6 +177,7 @@ class HomePage extends StatelessWidget {
 const List<String> list = <String>['Work', 'Personal', 'Health', 'Other'];
 
 Future<void> _showMyDialog(BuildContext parentContext) async {
+  TextEditingController myController = new TextEditingController();
   var he = MediaQuery.of(parentContext).size.height;
 
   return showDialog<void>(
@@ -201,7 +204,7 @@ Future<void> _showMyDialog(BuildContext parentContext) async {
             Text(
               "Add Task",
               style: TextStyle(
-                color: Colors.grey.shade500,
+                color: Colors.grey.shade700,
                 fontWeight: FontWeight.w500,
                 fontSize: he * 0.04,
               ),
@@ -209,13 +212,14 @@ Future<void> _showMyDialog(BuildContext parentContext) async {
             SizedBox(
               height: he * 0.04,
             ),
-            const DropdownButtonExample(),
+            DropdownButtonExample(),
             SizedBox(
               height: he * 0.02,
             ),
             Padding(
               padding: EdgeInsets.only(left: he * 0.06, right: he * 0.06),
-              child: const TextField(
+              child: TextField(
+                controller: myController,
                 decoration: InputDecoration(
                   // border: OutlineInputBorder(),
                   hintText: 'Enter task name',
@@ -231,6 +235,9 @@ Future<void> _showMyDialog(BuildContext parentContext) async {
                       MaterialStatePropertyAll<Color>(Colors.blue.shade600),
                 ),
                 onPressed: () {
+                  print('hello');
+                  print('value, ${myController.text}');
+                  // TaskTimeLine.buildCard();
                   Navigator.pop(context);
                 },
                 child: const Text(
