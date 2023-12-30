@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/modals/Task_modal.dart';
 import 'package:note_app/widgets/TaskTimeLine.dart';
-import 'package:note_app/widgets/task.dart';
 import 'package:note_app/widgets/task_title.dart';
 
 import 'datePicker.dart';
 
 class DetailPage extends StatelessWidget {
-  final Task task;
-  DetailPage(this.task);
+  final Category cateogry;
+  const DetailPage({Key? key, required this.cateogry}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final detailList = task.desc;
     return Scaffold(
       backgroundColor: Colors.black,
       body: CustomScrollView(
@@ -36,7 +34,7 @@ class DetailPage extends StatelessWidget {
               ),
             ),
           ),
-          detailList == null
+          cateogry.todos.isEmpty
               ? SliverFillRemaining(
                   child: Container(
                     color: Colors.white,
@@ -54,8 +52,9 @@ class DetailPage extends StatelessWidget {
                 )
               : SliverList(
                   delegate: SliverChildBuilderDelegate(
-                      (context, index) => TaskTimeLine(detailList[index]),
-                      childCount: detailList.length)),
+                      (context, index) =>
+                          TaskTimeLine(todo: cateogry.todos[index]),
+                      childCount: cateogry.todos.length)),
         ],
       ),
     );
@@ -89,7 +88,7 @@ class DetailPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Text(
-              '${task.title}',
+              '${cateogry.title}',
               style: const TextStyle(
                 fontSize: 20,
                 fontWeight: FontWeight.w500,
@@ -99,7 +98,7 @@ class DetailPage extends StatelessWidget {
               height: 5,
             ),
             Text(
-              'You have ${task.left} tasks to do',
+              'You have ${cateogry.getLeftTask()} tasks to do',
               style: const TextStyle(
                 fontSize: 11,
                 color: Colors.grey,

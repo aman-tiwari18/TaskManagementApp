@@ -5,7 +5,7 @@ const Color kYellowDark = Color.fromARGB(255, 232, 159, 70);
 const Color kYellow = Color.fromARGB(255, 181, 144, 63);
 
 const Color kBlueLight = Color.fromARGB(255, 172, 197, 231);
-const Color kBlueDark = Color.fromARGB(255, 2, 39, 113);
+const Color kBlueDark = Color.fromARGB(255, 11, 56, 147);
 const Color kBlue = Color.fromARGB(255, 180, 196, 215);
 
 const Color kred = Color.fromARGB(255, 195, 35, 48);

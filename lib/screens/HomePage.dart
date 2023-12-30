@@ -2,7 +2,9 @@
 // import 'dart:js';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:note_app/modals/Task_modal.dart';
+import 'package:intl/date_symbol_data_local.dart';
 // import 'package:note_app/components/upper_header.dart';
 // import 'package:note_app/modals/Task_modal.dart';
 import 'package:note_app/screens/ProfilePage.dart';
@@ -167,7 +169,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Tasks(),
+          child: CategoryScreen(),
         )
       ],
     );
@@ -175,10 +177,12 @@ class HomePage extends StatelessWidget {
 }
 
 const List<String> list = <String>['Work', 'Personal', 'Health', 'Other'];
-
+String dropdownValue = list.first;
 Future<void> _showMyDialog(BuildContext parentContext) async {
   TextEditingController myController = new TextEditingController();
   var he = MediaQuery.of(parentContext).size.height;
+  DateTime dateTime = DateTime.now();
+  String formattedTime = DateFormat.H().format(dateTime);
 
   return showDialog<void>(
     context: parentContext,
@@ -235,9 +239,15 @@ Future<void> _showMyDialog(BuildContext parentContext) async {
                       MaterialStatePropertyAll<Color>(Colors.blue.shade600),
                 ),
                 onPressed: () {
-                  print('hello');
-                  print('value, ${myController.text}');
-                  // TaskTimeLine.buildCard();
+                  Category selectedCategory =
+                      getCategoryFromName(dropdownValue);
+                  Todo newTodo = Todo(
+                    id: UniqueKey().hashCode,
+                    title: myController.text,
+                    slot: formattedTime + ':00',
+                    completed: false,
+                  );
+                  selectedCategory.add(newTodo);
                   Navigator.pop(context);
                 },
                 child: const Text(
@@ -262,8 +272,6 @@ class DropdownButtonExample extends StatefulWidget {
 }
 
 class _DropdownButtonExampleState extends State<DropdownButtonExample> {
-  String dropdownValue = list.first;
-
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
@@ -291,5 +299,20 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
         );
       }).toList(),
     );
+  }
+}
+
+Category getCategoryFromName(String categoryName) {
+  switch (categoryName) {
+    case 'Work':
+      return Work();
+    case 'Personal':
+      return Personal();
+    case 'Health':
+      return Health();
+    case 'Other':
+      return Other();
+    default:
+      throw Exception('Invalid category name');
   }
 }

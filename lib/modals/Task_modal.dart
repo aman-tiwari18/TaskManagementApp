@@ -1,109 +1,219 @@
 import 'package:flutter/material.dart';
 import 'package:note_app/widgets/constants.dart';
 
-class Task {
-  IconData? icon;
-  String? title;
-  Color? bgcolor;
-  Color? iconcolor;
-  Color? btncolor;
-  num? left;
-  List<Map<String, dynamic>>? desc;
-  num? done;
-  bool isLast;
+import 'dart:math';
 
-  Task(
-      {this.icon,
-      this.title,
-      this.bgcolor,
-      this.iconcolor,
-      this.btncolor,
-      this.left,
-      this.desc,
-      this.done,
-      this.isLast = false});
+abstract class Category {
+  String get title;
+  Icon get icon;
+  Color get bgColor;
+  List<Todo> get todos;
 
-  static List<Task> generateTasks() {
-    return [
-      Task(
-        icon: Icons.person_rounded,
-        title: 'Personal',
-        bgcolor: kBlueLight,
-        iconcolor: kBlueDark,
-        btncolor: Color.fromARGB(255, 133, 172, 203),
-        left: 5,
-        desc: [
-          {
-            'time': '10:00 AM',
-            'title': 'Watching a movie',
-            'slot': '10:00 AM - 11:00 AM',
-            'tlColor': kBlueDark,
-            'bgColor': kBlueLight,
-          },
-          {
-            'time': '11:00 AM',
-            'title': '',
-            'slot': '',
-            'tlColor': kYellowDark,
-            'bgColor': kYellowLight,
-          },
-          {
-            'time': '12:00 PM',
-            'title': 'Go to the Gym',
-            'slot': '12:00 PM - 1:00 PM',
-            'tlColor': kRedDark,
-            'bgColor': kRedLight,
-          },
-        ],
-        done: 3,
-        isLast: false,
-      ),
-      Task(
-        icon: Icons.work,
-        title: 'Work',
-        bgcolor: kYellowLight,
-        iconcolor: kYellowDark,
-        btncolor: const Color.fromARGB(255, 218, 212, 152),
-        left: 5,
-        desc: [
-          {
-            'time': '9:00 AM',
-            'title': 'Meeting with client',
-            'slot': '9:00 AM - 10:00 AM',
-            'tlColor': kRedDark,
-            'bgColor': kRedLight,
-          },
-          {
-            'time': '1:00 PM',
-            'title': 'call with Client',
-            'slot': '1:00 PM - 2:00 PM',
-            'tlColor': kYellowDark,
-            'bgColor': kYellowLight,
-          },
-        ],
-        done: 3,
-        isLast: false,
-      ),
-      Task(
-        icon: Icons.favorite_rounded,
-        title: 'Health',
-        bgcolor: kRedLight,
-        iconcolor: Colors.red,
-        btncolor: const Color.fromARGB(255, 223, 146, 141),
-        left: 5,
-        done: 3,
-        isLast: false,
-      ),
-      Task(
-        icon: Icons.border_outer_sharp,
-        title: 'Other',
-        bgcolor: kBlue,
-        iconcolor: kBlueDark,
-        btncolor: Color.fromARGB(255, 133, 172, 203),
-        left: 5,
-        done: 3,
-        isLast: false,
-      ),
-    ];
+  void add(Todo todo);
+  int getCompletedTask();
+  int getLeftTask();
+}
+
+class Personal extends Category {
+  static final Personal _instance = Personal._internal();
+
+  factory Personal() {
+    return _instance;
+  }
+
+  Personal._internal();
+
+  final String _title = "Personal";
+  final Icon _icon = const Icon(
+    Icons.person_rounded,
+    color: kBlueDark,
+  );
+  final Color _bgColor = kBlueLight;
+  final List<Todo> _todos = [];
+
+  @override
+  List<Todo> get todos => _todos;
+
+  @override
+  void add(Todo todo) {
+    _todos.add(todo);
+  }
+
+  @override
+  int getCompletedTask() {
+    return _todos.where((element) => element.completed == true).length;
+  }
+
+  @override
+  int getLeftTask() {
+    return _todos.where((element) => element.completed == false).length;
+  }
+
+  @override
+  Color get bgColor => _bgColor;
+
+  @override
+  Icon get icon => _icon;
+
+  @override
+  String get title => _title;
+}
+
+class Work extends Category {
+  final String _title = "Work";
+  final Icon _icon = const Icon(
+    Icons.work,
+    color: kYellowDark,
+  );
+  final Color _bgColor = kYellowLight;
+  final List<Todo> _todos = [];
+
+  static final Work _instance = Work._internal();
+
+  Work._internal();
+
+  factory Work() {
+    return _instance;
+  }
+
+  @override
+  List<Todo> get todos => _todos;
+
+  @override
+  void add(Todo todo) {
+    _todos.add(todo);
+  }
+
+  @override
+  int getCompletedTask() {
+    return _todos.map((todo) => todo.completed).toList().length;
+  }
+
+  @override
+  int getLeftTask() {
+    return _todos.map((todo) => !todo.completed).toList().length;
+  }
+
+  @override
+  Color get bgColor => _bgColor;
+
+  @override
+  Icon get icon => _icon;
+
+  @override
+  String get title => _title;
+}
+
+class Health extends Category {
+  final String _title = "Health";
+  final Icon _icon = const Icon(
+    Icons.favorite,
+    color: Colors.red,
+  );
+  final Color _bgColor = kRedLight;
+  final List<Todo> _todos = [];
+
+  static final Health _instance = Health._internal();
+
+  Health._internal();
+
+  factory Health() {
+    return _instance;
+  }
+
+  @override
+  List<Todo> get todos => _todos;
+
+  @override
+  void add(Todo todo) {
+    _todos.add(todo);
+  }
+
+  @override
+  int getCompletedTask() {
+    return _todos.map((todo) => todo.completed).toList().length;
+  }
+
+  @override
+  int getLeftTask() {
+    return _todos.map((todo) => !todo.completed).toList().length;
+  }
+
+  @override
+  Color get bgColor => _bgColor;
+
+  @override
+  Icon get icon => _icon;
+
+  @override
+  String get title => _title;
+}
+
+class Other extends Category {
+  final String _title = "Other";
+  final Icon _icon = const Icon(
+    Icons.open_with_rounded,
+    color: kBlueDark,
+  );
+  final Color _bgColor = kBlueLight;
+  final List<Todo> _todos = [];
+
+  static final Other _instance = Other._internal();
+
+  Other._internal();
+
+  factory Other() {
+    return _instance;
+  }
+
+  @override
+  List<Todo> get todos => _todos;
+
+  @override
+  void add(Todo todo) {
+    _todos.add(todo);
+  }
+
+  @override
+  int getCompletedTask() {
+    return _todos.map((todo) => todo.completed).toList().length;
+  }
+
+  @override
+  int getLeftTask() {
+    return _todos.map((todo) => !todo.completed).toList().length;
+  }
+
+  @override
+  Color get bgColor => _bgColor;
+
+  @override
+  Icon get icon => _icon;
+
+  @override
+  String get title => _title;
+}
+
+class Todo {
+  final int id;
+  final String title;
+  final String slot;
+  final bool completed;
+
+  late final Color bgColor;
+  final List<Color> _colors = [kBlue, kred, kYellow];
+
+  void _createBgColor() {
+    final int seed = Random().nextInt(3);
+    bgColor = _colors[seed];
+  }
+
+  Todo({
+    required this.id,
+    required this.title,
+    required this.slot,
+    this.completed = false,
+  }) {
+    _createBgColor();
   }
 }
